@@ -93,7 +93,6 @@ Batch Size:
 <script>
 
 const locations = [
-
 "abandoned hospital",
 "haunted asylum",
 "foggy cemetery",
@@ -104,26 +103,22 @@ const locations = [
 "ritual chamber",
 "forgotten church",
 "collapsed subway tunnel"
-
 ];
 
 const monsters = [
-
-shadow demon,
-faceless ghost,
-rotting corpse,
-ancient eldritch creature,
-whispering spirit,
-skinwalker,
-pale crawler,
-possessed nun,
-mutated human,
-hollow-eyed entity
-
+"shadow demon",
+"faceless ghost",
+"rotting corpse",
+"ancient eldritch creature",
+"whispering spirit",
+"skinwalker",
+"pale crawler",
+"possessed nun",
+"mutated human",
+"hollow-eyed entity"
 ];
 
 const styles = [
-
 "analog horror",
 "cinematic horror",
 "photorealistic horror",
@@ -131,98 +126,77 @@ const styles = [
 "dark fantasy horror",
 "psychological horror",
 "Lovecraftian horror"
-
 ];
 
 const lighting = [
-
 "flickering candlelight",
 "moonlight through fog",
 "dim flashlight beam",
 "red emergency lighting",
 "eerie green glow",
 "dark misty atmosphere"
-
 ];
 
 const camera = [
-
 "cinematic wide shot",
 "close-up horror shot",
 "POV camera angle",
 "found footage camera",
 "dramatic low angle",
 "overhead drone shot"
-
 ];
 
 function rand(arr){
-
 return arr[Math.floor(Math.random()*arr.length)];
-
 }
 
 function createPrompt(){
 
-return `
-
-${rand(styles)} scene of a ${rand(monsters)} inside a ${rand(locations)}, ${rand(camera)}, illuminated by ${rand(lighting)}, ultra detailed, terrifying atmosphere, 8k cinematic, volumetric fog, dramatic shadows
-
-`;
+return `${rand(styles)} scene of a ${rand(monsters)} inside a ${rand(locations)}, ${rand(camera)}, illuminated by ${rand(lighting)}, ultra detailed, terrifying atmosphere, cinematic, volumetric fog, dramatic shadows`;
 
 }
 
 function generatePrompt(){
-
 document.getElementById("output").value = createPrompt();
-
 }
 
 function generateBatch(){
 
 let size = document.getElementById("batchSize").value;
-
-let results=[];
+let results = [];
 
 for(let i=0;i<size;i++){
-
 results.push(createPrompt());
-
 }
 
-document.getElementById("output").value=results.join("\n\n");
-
+document.getElementById("output").value = results.join("\n\n");
 }
 
 function copyPrompt(){
 
-let text=document.getElementById("output");
+let text = document.getElementById("output");
 
-text.select();
-
-document.execCommand("copy");
+navigator.clipboard.writeText(text.value);
 
 alert("Copied!");
-
 }
 
 function downloadPrompt(){
 
-let text=document.getElementById("output").value;
+let text = document.getElementById("output").value;
 
-let blob=new Blob([text],{type:"text/plain"});
+let blob = new Blob([text], {type:"text/plain"});
 
-let a=document.createElement("a");
+let a = document.createElement("a");
 
-a.href=URL.createObjectURL(blob);
+a.href = URL.createObjectURL(blob);
 
-a.download="horror-prompts.txt";
+a.download = "horror-prompts.txt";
 
 a.click();
-
 }
 
-</script>
-
+  </script>
+  
 </body>
   </html>
