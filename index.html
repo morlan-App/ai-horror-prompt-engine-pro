@@ -94,28 +94,28 @@ Batch Size:
 
 const locations = [
 "abandoned hospital",
-"haunted asylum",
 "foggy cemetery",
+"haunted asylum",
 "abandoned school",
 "dark forest",
-"underground bunker",
+"underground tunnel",
 "cursed village",
 "ritual chamber",
 "forgotten church",
-"collapsed subway tunnel"
+"collapsed subway station"
 ];
 
 const monsters = [
 "shadow demon",
+"pale crawler",
 "faceless ghost",
-"rotting corpse",
+"rotting corpse entity",
 "ancient eldritch creature",
 "whispering spirit",
 "skinwalker",
-"pale crawler",
 "possessed nun",
-"mutated human",
-"hollow-eyed entity"
+"hollow-eyed entity",
+"mutated humanoid creature"
 ];
 
 const styles = [
@@ -124,7 +124,6 @@ const styles = [
 "photorealistic horror",
 "found footage horror",
 "dark fantasy horror",
-"psychological horror",
 "Lovecraftian horror"
 ];
 
@@ -139,11 +138,19 @@ const lighting = [
 
 const camera = [
 "cinematic wide shot",
+"dramatic low angle shot",
+"handheld found footage camera",
 "close-up horror shot",
-"POV camera angle",
-"found footage camera",
-"dramatic low angle",
-"overhead drone shot"
+"slow tracking shot",
+"over-the-shoulder camera view"
+];
+
+const motion = [
+"slow camera movement",
+"shaky handheld motion",
+"slow cinematic zoom",
+"creeping forward camera movement",
+"slow pan through darkness"
 ];
 
 function rand(arr){
@@ -152,8 +159,43 @@ return arr[Math.floor(Math.random()*arr.length)];
 
 function createPrompt(){
 
-return `${rand(styles)} scene of a ${rand(monsters)} inside a ${rand(locations)}, ${rand(camera)}, illuminated by ${rand(lighting)}, ultra detailed, terrifying atmosphere, cinematic, volumetric fog, dramatic shadows`;
+let monster = rand(monsters);
+let location = rand(locations);
+let style = rand(styles);
+let light = rand(lighting);
 
+let cam1 = rand(camera);
+let cam2 = rand(camera);
+let cam3 = rand(camera);
+let cam4 = rand(camera);
+
+return `
+
+OUTPUT 1 — IMAGE PROMPT (THUMBNAIL)
+
+${style} horror scene of a ${monster} inside a ${location}, ${cam1}, illuminated by ${light}, ultra detailed, cinematic composition, terrifying atmosphere, volumetric fog, dramatic shadows, 8k
+
+
+OUTPUT 2 — VIDEO SCENE 1 (ESTABLISHING)
+
+cinematic horror video of a ${location}, environment slowly revealed, ${cam1}, ${rand(motion)}, ${light}, eerie atmosphere, suspense building
+
+
+OUTPUT 3 — VIDEO SCENE 2 (SUSPENSE)
+
+the ${monster} partially visible in the darkness inside the ${location}, ${cam2}, ${rand(motion)}, tension rising, unsettling horror atmosphere
+
+
+OUTPUT 4 — VIDEO SCENE 3 (ENCOUNTER)
+
+full appearance of the ${monster}, moving inside the ${location}, ${cam3}, intense horror moment, flickering lights, dramatic tension
+
+
+OUTPUT 5 — VIDEO SCENE 4 (CLIMAX)
+
+the ${monster} approaching the camera inside the ${location}, ${cam4}, ${rand(motion)}, terrifying final moment, dark cinematic horror ending
+
+`;
 }
 
 function generatePrompt(){
@@ -169,15 +211,11 @@ for(let i=0;i<size;i++){
 results.push(createPrompt());
 }
 
-document.getElementById("output").value = results.join("\n\n");
+document.getElementById("output").value = results.join("\n\n====================\n\n");
 }
 
 function copyPrompt(){
-
-let text = document.getElementById("output");
-
-navigator.clipboard.writeText(text.value);
-
+navigator.clipboard.writeText(document.getElementById("output").value);
 alert("Copied!");
 }
 
@@ -185,7 +223,7 @@ function downloadPrompt(){
 
 let text = document.getElementById("output").value;
 
-let blob = new Blob([text], {type:"text/plain"});
+let blob = new Blob([text],{type:"text/plain"});
 
 let a = document.createElement("a");
 
@@ -194,9 +232,10 @@ a.href = URL.createObjectURL(blob);
 a.download = "horror-prompts.txt";
 
 a.click();
+
 }
 
-  </script>
+</script>
   
 </body>
   </html>
