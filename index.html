@@ -2,46 +2,49 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>AI Horror Prompt Engine PRO</title>
-
+<title>Found Footage Horror Prompt Engine</title>
 <style>
 
 body{
-background:#0a0a0a;
-color:white;
-font-family:Arial;
-text-align:center;
+background:#0b0b0b;
+color:#e6e6e6;
+font-family:Arial, sans-serif;
 padding:30px;
+text-align:center;
 }
 
 h1{
-color:#ff3c3c;
+color:#ff4040;
+margin-bottom:10px;
 }
 
 .container{
-max-width:900px;
+max-width:950px;
 margin:auto;
 }
 
+.controls{
+margin-bottom:20px;
+}
+
 button{
-padding:12px 20px;
-margin:6px;
+background:#ff4040;
 border:none;
+padding:10px 16px;
+margin:6px;
 border-radius:6px;
-background:#ff3c3c;
 color:white;
 font-weight:bold;
 cursor:pointer;
 }
 
 button:hover{
-background:#ff1c1c;
+background:#ff2020;
 }
 
 textarea{
 width:100%;
-height:300px;
-margin-top:20px;
+height:320px;
 background:#111;
 color:#00ff9d;
 border:1px solid #333;
@@ -49,14 +52,13 @@ padding:15px;
 font-family:monospace;
 }
 
-.controls{
-margin-bottom:20px;
+input[type=number]{
+width:70px;
+padding:5px;
 }
 
-input{
-padding:8px;
-width:80px;
-text-align:center;
+input[type=range]{
+width:200px;
 }
 
 </style>
@@ -66,23 +68,22 @@ text-align:center;
 
 <div class="container">
 
-<h1>AI Horror Prompt Engine PRO</h1>
+<h1>Found Footage Horror Prompt Engine</h1>
 
 <div class="controls">
 
-<button onclick="generatePrompt()">Generate Prompt</button>
+Batch
+<input id="batchSize" type="number" value="1" min="1" max="20">
 
+Intensity
+<input id="intensity" type="range" min="1" max="5" value="3">
+
+<br>
+
+<button onclick="generatePrompt()">Generate</button>
 <button onclick="generateBatch()">Generate Batch</button>
-
 <button onclick="copyPrompt()">Copy</button>
-
 <button onclick="downloadPrompt()">Download</button>
-
-<br><br>
-
-Batch Size:
-
-<input id="batchSize" type="number" value="10" min="1" max="50">
 
 </div>
 
@@ -92,150 +93,149 @@ Batch Size:
 
 <script>
 
-const locations = [
-"abandoned hospital",
+const locations=[
+"abandoned hospital corridor",
 "foggy cemetery",
-"haunted asylum",
-"abandoned school",
-"dark forest",
-"underground tunnel",
-"cursed village",
-"ritual chamber",
-"forgotten church",
-"collapsed subway station"
+"collapsed subway tunnel",
+"dark forest trail",
+"abandoned rural house",
+"empty school hallway",
+"underground bunker",
+"forgotten church"
 ];
 
-const monsters = [
-"shadow demon",
+const monsters=[
 "pale crawler",
+"shadow demon",
 "faceless ghost",
 "rotting corpse entity",
-"ancient eldritch creature",
-"whispering spirit",
-"skinwalker",
-"possessed nun",
-"hollow-eyed entity",
-"mutated humanoid creature"
+"skinwalker creature",
+"hollow eyed humanoid"
 ];
 
-const styles = [
-"analog horror",
-"cinematic horror",
-"photorealistic horror",
-"found footage horror",
-"dark fantasy horror",
-"Lovecraftian horror"
-];
-
-const lighting = [
-"flickering candlelight",
-"moonlight through fog",
+const lighting=[
 "dim flashlight beam",
-"red emergency lighting",
-"eerie green glow",
-"dark misty atmosphere"
+"moonlight through fog",
+"flickering fluorescent lights",
+"weak phone flashlight",
+"red emergency lighting"
 ];
 
-const camera = [
-"cinematic wide shot",
-"dramatic low angle shot",
-"handheld found footage camera",
-"close-up horror shot",
-"slow tracking shot",
-"over-the-shoulder camera view"
+const sounds=[
+"distant whispering",
+"faint metallic noises",
+"strange scratching sounds",
+"unexplained footsteps",
+"wind echoing through the area"
 ];
 
-const motion = [
-"slow camera movement",
-"shaky handheld motion",
-"slow cinematic zoom",
-"creeping forward camera movement",
-"slow pan through darkness"
+const cameraDefects=[
+"heavy sensor noise",
+"grainy low light footage",
+"VHS distortion",
+"motion blur",
+"compression artifacts"
 ];
 
 function rand(arr){
 return arr[Math.floor(Math.random()*arr.length)];
 }
 
+function generateTitle(monster,location){
+return `Found Footage of a ${monster} Discovered in an ${location}`;
+}
+
 function createPrompt(){
 
-let monster = rand(monsters);
-let location = rand(locations);
-let style = rand(styles);
-let light = rand(lighting);
+let monster=rand(monsters);
+let location=rand(locations);
+let light=rand(lighting);
+let sound=rand(sounds);
+let defect=rand(cameraDefects);
 
-let cam1 = rand(camera);
-let cam2 = rand(camera);
-let cam3 = rand(camera);
-let cam4 = rand(camera);
+let intensity=document.getElementById("intensity").value;
+
+let tensionWords=[
+"uneasy atmosphere",
+"growing tension",
+"disturbing presence",
+"terrifying encounter",
+"chaotic horror climax"
+];
 
 return `
 
-OUTPUT 1 — IMAGE PROMPT (THUMBNAIL)
+TITLE
+${generateTitle(monster,location)}
 
-${style} horror scene of a ${monster} inside a ${location}, ${cam1}, illuminated by ${light}, ultra detailed, cinematic composition, terrifying atmosphere, volumetric fog, dramatic shadows, 8k
+OUTPUT 1 — THUMBNAIL / IMAGE PROMPT
+
+found footage horror frame captured by an amateur handheld camera inside a ${location}, ${monster} barely visible in darkness, ${light}, ${defect}, unsettling atmosphere, analog horror style
 
 
-OUTPUT 2 — VIDEO SCENE 1 (ESTABLISHING)
+OUTPUT 2 — VIDEO SCENE 1 (EXPLORATION)
 
-cinematic horror video of a ${location}, environment slowly revealed, ${cam1}, ${rand(motion)}, ${light}, eerie atmosphere, suspense building
+amateur handheld footage exploring a ${location}, cautious camera movement, ${light}, ${sound}, ${tensionWords[0]}
 
 
 OUTPUT 3 — VIDEO SCENE 2 (SUSPENSE)
 
-the ${monster} partially visible in the darkness inside the ${location}, ${cam2}, ${rand(motion)}, tension rising, unsettling horror atmosphere
+camera moving deeper inside the ${location}, shadows shifting, ${monster} briefly visible in the distance, ${tensionWords[1]}, ${defect}
 
 
 OUTPUT 4 — VIDEO SCENE 3 (ENCOUNTER)
 
-full appearance of the ${monster}, moving inside the ${location}, ${cam3}, intense horror moment, flickering lights, dramatic tension
+the ${monster} suddenly appearing in front of the camera inside the ${location}, panic movement, intense handheld shaking, ${tensionWords[3]}
 
 
 OUTPUT 5 — VIDEO SCENE 4 (CLIMAX)
 
-the ${monster} approaching the camera inside the ${location}, ${cam4}, ${rand(motion)}, terrifying final moment, dark cinematic horror ending
+the ${monster} rushing toward the camera, chaotic handheld motion, terrifying final seconds of footage before recording abruptly ends
 
 `;
+
 }
 
 function generatePrompt(){
-document.getElementById("output").value = createPrompt();
+document.getElementById("output").value=createPrompt();
 }
 
 function generateBatch(){
 
-let size = document.getElementById("batchSize").value;
-let results = [];
+let size=document.getElementById("batchSize").value;
+
+let results=[];
 
 for(let i=0;i<size;i++){
 results.push(createPrompt());
 }
 
-document.getElementById("output").value = results.join("\n\n====================\n\n");
+document.getElementById("output").value=results.join("\n\n============================\n\n");
+
 }
 
 function copyPrompt(){
 navigator.clipboard.writeText(document.getElementById("output").value);
-alert("Copied!");
+alert("Copied");
 }
 
 function downloadPrompt(){
 
-let text = document.getElementById("output").value;
+let text=document.getElementById("output").value;
 
-let blob = new Blob([text],{type:"text/plain"});
+let blob=new Blob([text],{type:"text/plain"});
 
-let a = document.createElement("a");
+let a=document.createElement("a");
 
-a.href = URL.createObjectURL(blob);
+a.href=URL.createObjectURL(blob);
 
-a.download = "horror-prompts.txt";
+a.download="horror-prompts.txt";
 
 a.click();
 
 }
 
 </script>
-  
+
 </body>
-  </html>
+</html>
