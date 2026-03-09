@@ -108,3 +108,43 @@ result+="\n\n----------------------\n\n"
 document.getElementById("output").textContent=result
 
   }
+function generatePrompt(){
+
+const type=document.getElementById("type").value
+const location=document.getElementById("location").value
+const time=document.getElementById("time").value
+const creature=document.getElementById("creature").value
+
+document.getElementById("output").textContent=
+createPrompt(type,location,time,creature)
+
+}
+
+function randomScenario(){
+
+document.getElementById("location").value=randomItem(locations)
+document.getElementById("creature").value=randomItem(creatures)
+document.getElementById("time").value="midnight"
+
+}
+
+function generateBatch(){
+
+let result=""
+
+for(let i=0;i<20;i++){
+
+result+=createPrompt(
+"POV vlog",
+randomItem(locations),
+"midnight",
+randomItem(creatures)
+)
+
+result+="\n\n===========================\n\n"
+
+}
+
+document.getElementById("output").textContent=result
+
+}
