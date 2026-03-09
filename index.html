@@ -1,42 +1,228 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<title>AI Horror Prompt Engine PRO</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
 
-<title>AI Horror Prompt Studio</title>
+body{
+background:#0a0a0a;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:30px;
+}
 
-<link rel="stylesheet" href="style.css">
+h1{
+color:#ff3c3c;
+}
 
+.container{
+max-width:900px;
+margin:auto;
+}
+
+button{
+padding:12px 20px;
+margin:6px;
+border:none;
+border-radius:6px;
+background:#ff3c3c;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff1c1c;
+}
+
+textarea{
+width:100%;
+height:300px;
+margin-top:20px;
+background:#111;
+color:#00ff9d;
+border:1px solid #333;
+padding:15px;
+font-family:monospace;
+}
+
+.controls{
+margin-bottom:20px;
+}
+
+input{
+padding:8px;
+width:80px;
+text-align:center;
+}
+
+</style>
 </head>
 
 <body>
 
-<h1>AI Horror Prompt Studio</h1>
+<div class="container">
 
-<div class="panel">
+<h1>AI Horror Prompt Engine PRO</h1>
 
-<input id="type" placeholder="Content type (POV vlog)">
-<input id="location" placeholder="Location">
-<input id="time" placeholder="Time">
-<input id="creature" placeholder="Horror creature">
-
-<div class="buttons">
+<div class="controls">
 
 <button onclick="generatePrompt()">Generate Prompt</button>
 
-<button onclick="randomScenario()">Random Horror</button>
+<button onclick="generateBatch()">Generate Batch</button>
 
-<button onclick="generateBatch()">Generate 20 Prompts</button>
+<button onclick="copyPrompt()">Copy</button>
+
+<button onclick="downloadPrompt()">Download</button>
+
+<br><br>
+
+Batch Size:
+
+<input id="batchSize" type="number" value="10" min="1" max="50">
 
 </div>
 
-<pre id="output"></pre>
-<textarea id="output" rows="10" cols="50"></textarea>
+<textarea id="output"></textarea>
 
-<script src="data.js"></script>
-<script src="app.js"></script>
-<script src="script.js"></script>
+</div>
+
+<script>
+
+const locations = [
+
+"abandoned hospital",
+"haunted asylum",
+"foggy cemetery",
+"abandoned school",
+"dark forest",
+"underground bunker",
+"cursed village",
+"ritual chamber",
+"forgotten church",
+"collapsed subway tunnel"
+
+];
+
+const monsters = [
+
+shadow demon,
+faceless ghost,
+rotting corpse,
+ancient eldritch creature,
+whispering spirit,
+skinwalker,
+pale crawler,
+possessed nun,
+mutated human,
+hollow-eyed entity
+
+];
+
+const styles = [
+
+"analog horror",
+"cinematic horror",
+"photorealistic horror",
+"found footage horror",
+"dark fantasy horror",
+"psychological horror",
+"Lovecraftian horror"
+
+];
+
+const lighting = [
+
+"flickering candlelight",
+"moonlight through fog",
+"dim flashlight beam",
+"red emergency lighting",
+"eerie green glow",
+"dark misty atmosphere"
+
+];
+
+const camera = [
+
+"cinematic wide shot",
+"close-up horror shot",
+"POV camera angle",
+"found footage camera",
+"dramatic low angle",
+"overhead drone shot"
+
+];
+
+function rand(arr){
+
+return arr[Math.floor(Math.random()*arr.length)];
+
+}
+
+function createPrompt(){
+
+return `
+
+${rand(styles)} scene of a ${rand(monsters)} inside a ${rand(locations)}, ${rand(camera)}, illuminated by ${rand(lighting)}, ultra detailed, terrifying atmosphere, 8k cinematic, volumetric fog, dramatic shadows
+
+`;
+
+}
+
+function generatePrompt(){
+
+document.getElementById("output").value = createPrompt();
+
+}
+
+function generateBatch(){
+
+let size = document.getElementById("batchSize").value;
+
+let results=[];
+
+for(let i=0;i<size;i++){
+
+results.push(createPrompt());
+
+}
+
+document.getElementById("output").value=results.join("\n\n");
+
+}
+
+function copyPrompt(){
+
+let text=document.getElementById("output");
+
+text.select();
+
+document.execCommand("copy");
+
+alert("Copied!");
+
+}
+
+function downloadPrompt(){
+
+let text=document.getElementById("output").value;
+
+let blob=new Blob([text],{type:"text/plain"});
+
+let a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="horror-prompts.txt";
+
+a.click();
+
+}
+
+</script>
 
 </body>
-</html>
+  </html>
