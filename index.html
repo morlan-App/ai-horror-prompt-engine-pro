@@ -1,31 +1,41 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Horror Prompt Generator</title>
+
+<title>AI Horror Prompt Studio</title>
+
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
 
-<h2>AI Horror Prompt Generator</h2>
+<h1>AI Horror Prompt Studio</h1>
+
+<div class="panel">
 
 <input id="type" placeholder="Content type (POV vlog)">
-<br><br>
-
 <input id="location" placeholder="Location">
-<br><br>
-
 <input id="time" placeholder="Time">
-<br><br>
-
 <input id="creature" placeholder="Horror creature">
-<br><br>
 
-<button onclick="generate()">Generate Prompt</button>
+<div class="buttons">
+
+<button onclick="generatePrompt()">Generate Prompt</button>
+
+<button onclick="generateRandom()">Random Horror</button>
+
+<button onclick="generateBatch()">Generate 10 Prompts</button>
+
+</div>
+
+</div>
 
 <pre id="output"></pre>
 
+<script src="data.js"></script>
 <script src="app.js"></script>
 
 </body>
