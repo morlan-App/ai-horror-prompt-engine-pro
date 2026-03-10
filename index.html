@@ -3,59 +3,84 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Horror Prompt Engine v5</title>
+<title>AI Horror Prompt Engine v7</title>
 
 <style>
 
 body{
-background:#0c0c0c;
-color:#eaeaea;
+margin:0;
+background:#0b0b0b;
+color:white;
 font-family:Arial;
-padding:30px;
 }
 
-h1{
-color:#ff3c3c;
+.header{
+background:#121212;
+padding:18px;
+text-align:center;
+font-weight:bold;
+font-size:20px;
+border-bottom:1px solid #222;
 }
 
 .container{
-max-width:1000px;
+padding:15px;
+max-width:900px;
 margin:auto;
 }
 
-.controls{
-margin-bottom:20px;
+.card{
+background:#151515;
+padding:15px;
+border-radius:12px;
+margin-bottom:15px;
+border:1px solid #222;
 }
 
-button{
-background:#ff3c3c;
-border:none;
-padding:10px 15px;
-margin:5px;
-border-radius:6px;
+label{
+font-size:13px;
+color:#aaa;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:5px;
+margin-bottom:10px;
+border-radius:8px;
+border:1px solid #333;
+background:#1b1b1b;
 color:white;
-font-weight:bold;
-cursor:pointer;
-}
-
-button:hover{
-background:#ff2020;
 }
 
 textarea{
 width:100%;
 height:350px;
 background:#111;
-color:#00ffa6;
+border-radius:10px;
 border:1px solid #333;
-padding:15px;
+color:#00ff9c;
+padding:10px;
 font-family:monospace;
 }
 
-input,select{
-padding:6px;
-margin:5px;
+button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#ff3c3c;
+color:white;
+font-weight:bold;
+}
+
+.buttons{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
 }
 
 </style>
@@ -64,212 +89,130 @@ margin:5px;
 
 <body>
 
+<div class="header">
+AI Horror Prompt Engine v7
+</div>
+
 <div class="container">
 
-<h1>AI Horror Prompt Engine v5</h1>
+<div class="card">
 
-<div class="controls">
-
-Batch
-<input id="batchSize" type="number" value="1" min="1" max="20">
-
-Intensity
-<input id="intensity" type="range" min="1" max="5" value="3">
-
-Operator
-<select id="operator">
-
-<option>curious explorer</option>
-<option>nervous investigator</option>
-<option>paranormal vlogger</option>
-<option>terrified witness</option>
-
+<label>Content Type</label>
+<select id="type">
+<option>POV first person vlog</option>
+<option>paranormal investigation vlog</option>
+<option>urban exploration vlog</option>
 </select>
 
-<br>
+<label>Location</label>
+<input id="location" placeholder="example: abandoned hospital">
 
-<button onclick="generatePrompt()">Generate</button>
-<button onclick="generateBatch()">Generate Batch</button>
-<button onclick="copyPrompt()">Copy</button>
-<button onclick="downloadPrompt()">Download</button>
+<label>Time</label>
+<input id="time" placeholder="example: midnight">
+
+<label>Horror Creature</label>
+<input id="creature" placeholder="example: pale crawler">
 
 </div>
 
+<div class="card">
+
 <textarea id="output"></textarea>
+
+<div class="buttons">
+
+<button onclick="generatePrompt()">Generate Prompt</button>
+
+<button onclick="copyPrompt()">Copy</button>
+
+<button onclick="downloadPrompt()">Download</button>
+
+<button onclick="clearPrompt()">Clear</button>
+
+</div>
+
+</div>
 
 </div>
 
 <script>
 
-const locations=[
-
-"abandoned hospital corridor",
-"foggy cemetery at midnight",
-"collapsed subway tunnel",
-"abandoned rural house",
-"dark forest trail",
-"empty school hallway",
-"underground bunker",
-"forgotten church interior",
-"abandoned amusement park",
-"derelict factory building"
-
-];
-
-const monsters=[
-
-"pale crawler",
-"shadow demon",
-"faceless ghost",
-"rotting corpse entity",
-"skinwalker creature",
-"hollow eyed humanoid",
-"possessed nun",
-"long limbed creature",
-"whispering spirit",
-"crawling shadow figure"
-
-];
-
-const lighting=[
-
-"dim flashlight beam",
-"moonlight through fog",
-"flickering fluorescent light",
-"weak phone flashlight",
-"red emergency lighting",
-"cold blue night lighting"
-
-];
-
-const defects=[
-
-"heavy sensor noise",
-"grainy low light footage",
-"VHS distortion",
-"motion blur",
-"compression artifacts"
-
-];
-
-const sounds=[
-
-"distant whispering",
-"unexplained footsteps",
-"metal scraping sounds",
-"wind echoing through the area",
-"faint scratching noises"
-
-];
-
-function rand(arr){
-
-return arr[Math.floor(Math.random()*arr.length)];
-
-}
-
-function createPrompt(){
-
-let monster=rand(monsters);
-let location=rand(locations);
-let light=rand(lighting);
-let defect=rand(defects);
-let sound=rand(sounds);
-
-let operator=document.getElementById("operator").value;
-
-let intensity=document.getElementById("intensity").value;
-
-let aggression=[
-
-"barely visible presence",
-"slow disturbing movement",
-"sudden appearance",
-"aggressive chase",
-"violent attack"
-
-];
-
-let action=aggression[intensity-1];
-
-return `
-
-TITLE
-Lost Footage of a ${monster} in a ${location}
-
-
-OUTPUT 1 — IMAGE PROMPT (FIRST FRAME)
-
-found footage horror frame captured by a handheld smartphone camera, ${operator} recording inside a ${location}, a ${monster} barely visible in darkness, ${light}, ${defect}, analog horror style
-
-
-OUTPUT 2 — VIDEO SCENE 1 (EXPLORATION)
-
-handheld smartphone footage recorded by a ${operator}, slowly scanning a ${location}, cautious camera movement, ${light}, ${sound}
-
-
-OUTPUT 3 — VIDEO SCENE 2 (SUSPENSE)
-
-camera moving deeper inside the ${location}, strange shadows appearing, ${monster} briefly visible in the distance, tension building, ${defect}
-
-
-OUTPUT 4 — VIDEO SCENE 3 (ENCOUNTER)
-
-the ${monster} suddenly appearing in front of the camera, chaotic handheld movement, panic reaction from the ${operator}
-
-
-OUTPUT 5 — VIDEO SCENE 4 (CLIMAX)
-
-the ${monster} ${action} toward the camera, violent shaking footage, terrifying final seconds before the recording abruptly ends
-
-`;
-
-}
-
 function generatePrompt(){
 
-document.getElementById("output").value=createPrompt();
+let type=document.getElementById("type").value
+let location=document.getElementById("location").value
+let time=document.getElementById("time").value
+let creature=document.getElementById("creature").value
 
-}
+let result=`
 
-function generateBatch(){
+TITLE
+Terrifying Footage of a ${creature} Found in a ${location}
 
-let size=document.getElementById("batchSize").value;
 
-let results=[];
+OUTPUT 1 — IMAGE PROMPT
 
-for(let i=0;i<size;i++){
+hyper realistic horror frame, handheld smartphone camera POV, ${type}, recording inside a ${location} at ${time}, the ${creature} barely visible in darkness, grainy footage, realistic lighting
 
-results.push(createPrompt());
 
-}
+OUTPUT 2 — VIDEO SCENE 1
 
-document.getElementById("output").value=results.join("\n\n============================\n\n");
+handheld smartphone footage, ${type} exploring a ${location} at ${time}, camera slowly scanning surroundings, nervous breathing behind the camera
+
+
+OUTPUT 3 — VIDEO SCENE 2
+
+camera moving deeper into the ${location}, strange noises heard in the background, the ${creature} briefly visible in the shadows
+
+
+OUTPUT 4 — VIDEO SCENE 3
+
+the ${creature} suddenly appearing in front of the camera, chaotic handheld movement, the vlogger panicking
+
+
+OUTPUT 5 — VIDEO SCENE 4
+
+the ${creature} slowly approaching the camera while the vlogger runs away, camera shaking violently, terrifying final seconds
+
+
+YOUTUBE DESCRIPTION
+
+A paranormal vlogger explores a ${location} at ${time}. What starts as a simple investigation quickly turns into a terrifying encounter with a ${creature}.
+
+
+HASHTAGS
+
+#horror #analoghorror #foundfootage #scary #aivideo
+
+`
+
+document.getElementById("output").value=result
 
 }
 
 function copyPrompt(){
-
-navigator.clipboard.writeText(document.getElementById("output").value);
-
-alert("Copied");
-
+navigator.clipboard.writeText(document.getElementById("output").value)
+alert("Copied")
 }
 
 function downloadPrompt(){
 
-let text=document.getElementById("output").value;
+let text=document.getElementById("output").value
 
-let blob=new Blob([text],{type:"text/plain"});
+let blob=new Blob([text],{type:"text/plain"})
 
-let a=document.createElement("a");
+let a=document.createElement("a")
 
-a.href=URL.createObjectURL(blob);
+a.href=URL.createObjectURL(blob)
 
-a.download="horror-prompts.txt";
+a.download="horror-prompts.txt"
 
-a.click();
+a.click()
 
+}
+
+function clearPrompt(){
+document.getElementById("output").value=""
 }
 
 </script>
