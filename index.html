@@ -1,25 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+
 <meta charset="UTF-8">
-<title>Found Footage Horror Prompt Engine</title>
+
+<title>AI Horror Prompt Engine v5</title>
+
 <style>
 
 body{
-background:#0b0b0b;
-color:#e6e6e6;
-font-family:Arial, sans-serif;
+background:#0c0c0c;
+color:#eaeaea;
+font-family:Arial;
 padding:30px;
-text-align:center;
 }
 
 h1{
-color:#ff4040;
-margin-bottom:10px;
+color:#ff3c3c;
 }
 
 .container{
-max-width:950px;
+max-width:1000px;
 margin:auto;
 }
 
@@ -28,10 +29,10 @@ margin-bottom:20px;
 }
 
 button{
-background:#ff4040;
+background:#ff3c3c;
 border:none;
-padding:10px 16px;
-margin:6px;
+padding:10px 15px;
+margin:5px;
 border-radius:6px;
 color:white;
 font-weight:bold;
@@ -44,31 +45,28 @@ background:#ff2020;
 
 textarea{
 width:100%;
-height:320px;
+height:350px;
 background:#111;
-color:#00ff9d;
+color:#00ffa6;
 border:1px solid #333;
 padding:15px;
 font-family:monospace;
 }
 
-input[type=number]{
-width:70px;
-padding:5px;
-}
-
-input[type=range]{
-width:200px;
+input,select{
+padding:6px;
+margin:5px;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1>Found Footage Horror Prompt Engine</h1>
+<h1>AI Horror Prompt Engine v5</h1>
 
 <div class="controls">
 
@@ -77,6 +75,16 @@ Batch
 
 Intensity
 <input id="intensity" type="range" min="1" max="5" value="3">
+
+Operator
+<select id="operator">
+
+<option>curious explorer</option>
+<option>nervous investigator</option>
+<option>paranormal vlogger</option>
+<option>terrified witness</option>
+
+</select>
 
 <br>
 
@@ -94,55 +102,70 @@ Intensity
 <script>
 
 const locations=[
+
 "abandoned hospital corridor",
-"foggy cemetery",
+"foggy cemetery at midnight",
 "collapsed subway tunnel",
-"dark forest trail",
 "abandoned rural house",
+"dark forest trail",
 "empty school hallway",
 "underground bunker",
-"forgotten church"
+"forgotten church interior",
+"abandoned amusement park",
+"derelict factory building"
+
 ];
 
 const monsters=[
+
 "pale crawler",
 "shadow demon",
 "faceless ghost",
 "rotting corpse entity",
 "skinwalker creature",
-"hollow eyed humanoid"
+"hollow eyed humanoid",
+"possessed nun",
+"long limbed creature",
+"whispering spirit",
+"crawling shadow figure"
+
 ];
 
 const lighting=[
+
 "dim flashlight beam",
 "moonlight through fog",
-"flickering fluorescent lights",
+"flickering fluorescent light",
 "weak phone flashlight",
-"red emergency lighting"
+"red emergency lighting",
+"cold blue night lighting"
+
 ];
 
-const sounds=[
-"distant whispering",
-"faint metallic noises",
-"strange scratching sounds",
-"unexplained footsteps",
-"wind echoing through the area"
-];
+const defects=[
 
-const cameraDefects=[
 "heavy sensor noise",
 "grainy low light footage",
 "VHS distortion",
 "motion blur",
 "compression artifacts"
+
+];
+
+const sounds=[
+
+"distant whispering",
+"unexplained footsteps",
+"metal scraping sounds",
+"wind echoing through the area",
+"faint scratching noises"
+
 ];
 
 function rand(arr){
-return arr[Math.floor(Math.random()*arr.length)];
-}
 
-function generateTitle(monster,location){
-return `Found Footage of a ${monster} Discovered in an ${location}`;
+return arr[Math.floor(Math.random()*arr.length)];
+
 }
 
 function createPrompt(){
@@ -150,54 +173,63 @@ function createPrompt(){
 let monster=rand(monsters);
 let location=rand(locations);
 let light=rand(lighting);
+let defect=rand(defects);
 let sound=rand(sounds);
-let defect=rand(cameraDefects);
+
+let operator=document.getElementById("operator").value;
 
 let intensity=document.getElementById("intensity").value;
 
-let tensionWords=[
-"uneasy atmosphere",
-"growing tension",
-"disturbing presence",
-"terrifying encounter",
-"chaotic horror climax"
+let aggression=[
+
+"barely visible presence",
+"slow disturbing movement",
+"sudden appearance",
+"aggressive chase",
+"violent attack"
+
 ];
+
+let action=aggression[intensity-1];
 
 return `
 
 TITLE
-${generateTitle(monster,location)}
+Lost Footage of a ${monster} in a ${location}
 
-OUTPUT 1 — THUMBNAIL / IMAGE PROMPT
 
-found footage horror frame captured by an amateur handheld camera inside a ${location}, ${monster} barely visible in darkness, ${light}, ${defect}, unsettling atmosphere, analog horror style
+OUTPUT 1 — IMAGE PROMPT (FIRST FRAME)
+
+found footage horror frame captured by a handheld smartphone camera, ${operator} recording inside a ${location}, a ${monster} barely visible in darkness, ${light}, ${defect}, analog horror style
 
 
 OUTPUT 2 — VIDEO SCENE 1 (EXPLORATION)
 
-amateur handheld footage exploring a ${location}, cautious camera movement, ${light}, ${sound}, ${tensionWords[0]}
+handheld smartphone footage recorded by a ${operator}, slowly scanning a ${location}, cautious camera movement, ${light}, ${sound}
 
 
 OUTPUT 3 — VIDEO SCENE 2 (SUSPENSE)
 
-camera moving deeper inside the ${location}, shadows shifting, ${monster} briefly visible in the distance, ${tensionWords[1]}, ${defect}
+camera moving deeper inside the ${location}, strange shadows appearing, ${monster} briefly visible in the distance, tension building, ${defect}
 
 
 OUTPUT 4 — VIDEO SCENE 3 (ENCOUNTER)
 
-the ${monster} suddenly appearing in front of the camera inside the ${location}, panic movement, intense handheld shaking, ${tensionWords[3]}
+the ${monster} suddenly appearing in front of the camera, chaotic handheld movement, panic reaction from the ${operator}
 
 
 OUTPUT 5 — VIDEO SCENE 4 (CLIMAX)
 
-the ${monster} rushing toward the camera, chaotic handheld motion, terrifying final seconds of footage before recording abruptly ends
+the ${monster} ${action} toward the camera, violent shaking footage, terrifying final seconds before the recording abruptly ends
 
 `;
 
 }
 
 function generatePrompt(){
+
 document.getElementById("output").value=createPrompt();
+
 }
 
 function generateBatch(){
@@ -207,7 +239,9 @@ let size=document.getElementById("batchSize").value;
 let results=[];
 
 for(let i=0;i<size;i++){
+
 results.push(createPrompt());
+
 }
 
 document.getElementById("output").value=results.join("\n\n============================\n\n");
@@ -215,8 +249,11 @@ document.getElementById("output").value=results.join("\n\n======================
 }
 
 function copyPrompt(){
+
 navigator.clipboard.writeText(document.getElementById("output").value);
+
 alert("Copied");
+
 }
 
 function downloadPrompt(){
