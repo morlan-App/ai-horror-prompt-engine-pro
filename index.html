@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Horror Prompt Engine v7</title>
+<title>AI Horror Prompt Engine v12</title>
 
 <style>
 
@@ -17,11 +17,11 @@ font-family:Arial;
 }
 
 .header{
-background:#121212;
+background:#111;
 padding:18px;
 text-align:center;
-font-weight:bold;
 font-size:20px;
+font-weight:bold;
 border-bottom:1px solid #222;
 }
 
@@ -57,7 +57,7 @@ color:white;
 
 textarea{
 width:100%;
-height:350px;
+height:450px;
 background:#111;
 border-radius:10px;
 border:1px solid #333;
@@ -90,28 +90,36 @@ gap:10px;
 <body>
 
 <div class="header">
-AI Horror Prompt Engine v7
+AI Horror Prompt Engine v12
 </div>
 
 <div class="container">
 
 <div class="card">
 
-<label>Content Type</label>
-<select id="type">
-<option>POV first person vlog</option>
-<option>paranormal investigation vlog</option>
-<option>urban exploration vlog</option>
+<label>Prompt Engine</label>
+<select id="engine">
+<option>Grok</option>
+<option>Dreamina</option>
 </select>
 
-<label>Location</label>
-<input id="location" placeholder="example: abandoned hospital">
+<label>Location (optional)</label>
+<input id="location" placeholder="leave empty for random">
 
 <label>Time</label>
-<input id="time" placeholder="example: midnight">
+<input id="time" placeholder="midnight">
 
-<label>Horror Creature</label>
-<input id="creature" placeholder="example: pale crawler">
+<label>Creature (optional)</label>
+<input id="creature" placeholder="leave empty for random">
+
+<label>Number of Ideas</label>
+<select id="batch">
+<option>1</option>
+<option>10</option>
+<option>30</option>
+<option>50</option>
+<option>100</option>
+</select>
 
 </div>
 
@@ -121,13 +129,10 @@ AI Horror Prompt Engine v7
 
 <div class="buttons">
 
-<button onclick="generatePrompt()">Generate Prompt</button>
-
-<button onclick="copyPrompt()">Copy</button>
-
-<button onclick="downloadPrompt()">Download</button>
-
-<button onclick="clearPrompt()">Clear</button>
+<button onclick="generate()">Generate</button>
+<button onclick="copyText()">Copy</button>
+<button onclick="downloadText()">Download</button>
+<button onclick="clearText()">Clear</button>
 
 </div>
 
@@ -137,65 +142,119 @@ AI Horror Prompt Engine v7
 
 <script>
 
-function generatePrompt(){
+const locations=[
+"abandoned hospital",
+"haunted school",
+"old cemetery",
+"dark forest trail",
+"abandoned mall",
+"empty apartment building",
+"underground tunnel",
+"forgotten village"
+]
 
-let type=document.getElementById("type").value
+const monsters=[
+"kuntilanak",
+"pocong",
+"genderuwo",
+"leak bali",
+"palasik",
+"shadow creature",
+"faceless woman",
+"crawling ghost"
+]
+
+const hooks=[
+"Guys... kalian lihat itu di belakang saya?",
+"Saya dengar sesuatu di sana...",
+"Tunggu... ada yang bergerak.",
+"Tempat ini harusnya kosong...",
+"Ada suara langkah..."
+]
+
+function rand(arr){
+return arr[Math.floor(Math.random()*arr.length)]
+}
+
+function createStory(){
+
+let engine=document.getElementById("engine").value
 let location=document.getElementById("location").value
 let time=document.getElementById("time").value
 let creature=document.getElementById("creature").value
 
-let result=`
+if(location==""){
+location=rand(locations)
+}
+
+if(creature==""){
+creature=rand(monsters)
+}
+
+return `
+
+HOOK
+${rand(hooks)}
 
 TITLE
-Terrifying Footage of a ${creature} Found in a ${location}
+Terrifying ${creature} Encounter in ${location}
 
+THUMBNAIL PROMPT
+terrified vlogger face illuminated by flashlight,
+${creature} behind him,
+dark ${location},
+cinematic horror lighting
 
-OUTPUT 1 — IMAGE PROMPT
+IMAGE PROMPT
+ultra realistic horror scene,
+smartphone POV,
+exploring ${location} at ${time},
+${creature} standing in darkness
 
-hyper realistic horror frame, handheld smartphone camera POV, ${type}, recording inside a ${location} at ${time}, the ${creature} barely visible in darkness, grainy footage, realistic lighting
+SCENE 1
+POV arriving at ${location}
 
+SCENE 2
+Exploring area with flashlight
 
-OUTPUT 2 — VIDEO SCENE 1
+SCENE 3
+Strange sound in darkness
 
-handheld smartphone footage, ${type} exploring a ${location} at ${time}, camera slowly scanning surroundings, nervous breathing behind the camera
+SCENE 4
+${creature} appearing in shadows
 
+SCENE 5
+Creature suddenly rushing toward camera
 
-OUTPUT 3 — VIDEO SCENE 2
+SCENE 6
+Running escape with chaotic camera shake
 
-camera moving deeper into the ${location}, strange noises heard in the background, the ${creature} briefly visible in the shadows
-
-
-OUTPUT 4 — VIDEO SCENE 3
-
-the ${creature} suddenly appearing in front of the camera, chaotic handheld movement, the vlogger panicking
-
-
-OUTPUT 5 — VIDEO SCENE 4
-
-the ${creature} slowly approaching the camera while the vlogger runs away, camera shaking violently, terrifying final seconds
-
-
-YOUTUBE DESCRIPTION
-
-A paranormal vlogger explores a ${location} at ${time}. What starts as a simple investigation quickly turns into a terrifying encounter with a ${creature}.
-
-
-HASHTAGS
-
-#horror #analoghorror #foundfootage #scary #aivideo
+ENGINE
+optimized for ${engine}
 
 `
+}
 
-document.getElementById("output").value=result
+function generate(){
+
+let count=document.getElementById("batch").value
+
+let arr=[]
+
+for(let i=0;i<count;i++){
+arr.push(createStory())
+}
+
+document.getElementById("output").value=arr.join("\n\n====================\n\n")
 
 }
 
-function copyPrompt(){
+function copyText(){
 navigator.clipboard.writeText(document.getElementById("output").value)
 alert("Copied")
 }
 
-function downloadPrompt(){
+function downloadText(){
 
 let text=document.getElementById("output").value
 
@@ -205,13 +264,13 @@ let a=document.createElement("a")
 
 a.href=URL.createObjectURL(blob)
 
-a.download="horror-prompts.txt"
+a.download="horror_prompts.txt"
 
 a.click()
 
 }
 
-function clearPrompt(){
+function clearText(){
 document.getElementById("output").value=""
 }
 
