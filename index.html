@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Horror Prompt Engine Creator</title>
+<title>AI Horror Content Factory v25</title>
 
 <style>
 
@@ -58,7 +58,7 @@ color:white;
 
 textarea{
 width:100%;
-height:650px;
+height:700px;
 background:#111;
 border-radius:10px;
 border:1px solid #333;
@@ -91,7 +91,7 @@ gap:10px;
 <body>
 
 <div class="header">
-AI Horror Prompt Engine Creator v23
+AI Horror Content Factory v25
 </div>
 
 <div class="container">
@@ -105,27 +105,28 @@ AI Horror Prompt Engine Creator v23
 <option>Google Flow</option>
 </select>
 
+<label>POV Mode</label>
+<select id="pov">
+<option>Vlogger Camera</option>
+<option>Bodycam</option>
+<option>CCTV</option>
+<option>Police Cam</option>
+</select>
+
 <label>Location (optional)</label>
-<input id="location" placeholder="leave blank for random">
+<input id="location">
 
 <label>Creature (optional)</label>
-<input id="creature" placeholder="leave blank for random">
+<input id="creature">
 
 <label>Time</label>
-<input id="time" placeholder="midnight">
+<input id="time" value="midnight">
 
-<label>Scene Count (min 3)</label>
+<label>Scene Count</label>
 <input id="sceneCount" type="number" value="6">
 
 <label>Batch Stories</label>
 <input id="batch" type="number" value="1">
-
-<label>Horror Intensity</label>
-<select id="intensity">
-<option>Normal</option>
-<option>High</option>
-<option>Extreme</option>
-</select>
 
 </div>
 
@@ -155,10 +156,9 @@ const locations=[
 "abandoned apartment",
 "old cemetery",
 "abandoned factory",
-"deserted train station",
-"abandoned village",
+"abandoned mall",
 "underground tunnel",
-"abandoned mall"
+"abandoned village"
 ]
 
 const ghosts=[
@@ -167,24 +167,15 @@ const ghosts=[
 "genderuwo",
 "shadow entity",
 "faceless ghost",
-"pale ghost woman",
-"dark crawling creature"
-]
-
-const cameraMoves=[
-"the camera slowly pans left",
-"the explorer nervously turns the camera",
-"the flashlight beam scans the hallway",
-"the camera slowly zooms forward",
-"the explorer shakily moves the camera"
+"pale ghost woman"
 ]
 
 const tensionScenes=[
-"a distant metallic sound echoes",
-"a faint whisper is heard",
+"a distant metallic sound echoes through the building",
+"a faint whisper is heard behind the explorer",
 "the flashlight flickers briefly",
-"a shadow moves across the wall",
-"something knocks softly in another room"
+"a shadow suddenly moves across the wall",
+"a door slowly creaks somewhere nearby"
 ]
 
 function generate(){
@@ -194,11 +185,11 @@ let creature=document.getElementById("creature").value
 let time=document.getElementById("time").value
 let sceneCount=parseInt(document.getElementById("sceneCount").value)
 let batch=parseInt(document.getElementById("batch").value)
-let intensity=document.getElementById("intensity").value
+let pov=document.getElementById("pov").value
 let engine=document.getElementById("engine").value
 
 if(sceneCount<3){
-alert("Scene minimum adalah 3")
+alert("Minimum scene adalah 3")
 return
 }
 
@@ -214,26 +205,29 @@ let output=""
 
 for(let i=1;i<=batch;i++){
 
-let ytHashtags=`#horror #scary #foundfootage #ghost #paranormal #urbanexploration #${creature} #haunted #creepy`
+let title=`I Was Exploring a ${location}… Then This ${creature} Appeared`
 
-let fbHashtags=`#horrorvideo #scaryvideo #ghostvideo #viralvideo #paranormalactivity #horrorstories #${creature} #exploration`
+let hook=`I thought this place was abandoned… until something moved in the darkness.`
+
+let ytTags=`#horror #foundfootage #ghost #paranormal #${creature} #scary`
+let fbTags=`#horrorvideo #scaryvideo #ghostvideo #paranormal #${creature}`
 
 output+=`
 
 ===== STORY ${i} =====
 
-HOOK
-"I thought this place was empty… but something here is definitely watching me."
+SHORTS HOOK
+${hook}
 
-TITLE
-Exploring a haunted ${location}
+YOUTUBE TITLE
+${title}
 
 VIDEO IDEA
-POV paranormal exploration inside a ${location} at ${time}.
+POV ${pov} paranormal exploration inside a ${location} at ${time}.
 
 IMAGE PROMPT (NO CREATURE)
 
-Ultra realistic smartphone POV inside a dark ${location} at ${time}. A paranormal explorer stands at the entrance holding a flashlight while recording with a smartphone. Dust floats in the air and the atmosphere feels tense and silent. Cinematic horror lighting, realistic found footage style.
+Ultra realistic ${pov} footage inside a dark ${location} at ${time}. A paranormal explorer holding a flashlight records the dark environment. Dust particles float in the air creating a tense cinematic horror atmosphere. Realistic found footage style.
 
 `
 
@@ -244,7 +238,7 @@ if(s==1){
 output+=`
 SCENE ${s}
 
-POV handheld footage continuing from the image frame. The explorer slowly walks deeper into the ${location} while the flashlight beam shakes slightly from nervous hands.
+The explorer slowly walks deeper into the ${location}. The camera slightly shakes while the flashlight scans the dark corridor.
 `
 
 }
@@ -252,22 +246,31 @@ POV handheld footage continuing from the image frame. The explorer slowly walks 
 else if(s==sceneCount){
 
 output+=`
-SCENE ${s} – CREATURE ATTACK
+SCENE ${s} – EXTREME CHASE
 
-The ${creature} suddenly emerges from the darkness and violently rushes toward the camera causing chaotic handheld camera shaking.
+The ${creature} suddenly appears from the darkness and charges toward the camera.
+
+The explorer panics and runs.
+
+The camera shakes violently with chaotic handheld movement.
+
+Heavy breathing and loud footsteps echo.
+
+The flashlight beam swings wildly while the creature rapidly closes the distance behind.
+
+The camera tilts and almost drops as the explorer desperately runs through the dark hallway.
 `
 
 }
 
 else{
 
-let move=cameraMoves[Math.floor(Math.random()*cameraMoves.length)]
 let tension=tensionScenes[Math.floor(Math.random()*tensionScenes.length)]
 
 output+=`
 SCENE ${s}
 
-${move}. Suddenly ${tension}.
+${tension}.
 `
 
 }
@@ -276,25 +279,20 @@ ${move}. Suddenly ${tension}.
 
 output+=`
 
-THUMBNAIL PROMPT
+YOUTUBE DESCRIPTION
 
-Terrified explorer looking at the camera while a shadowy ${creature} appears behind in a dark ${location}, dramatic horror lighting.
+A paranormal explorer investigates a haunted ${location} at ${time}. What starts as a normal exploration suddenly turns into a terrifying encounter with a ${creature}.
+
+Watch until the end.
 
 YOUTUBE HASHTAGS
-
-${ytHashtags}
+${ytTags}
 
 FACEBOOK PRO HASHTAGS
-
-${fbHashtags}
+${fbTags}
 
 ENGINE
-
 Optimized for ${engine}
-
-INTENSITY
-
-${intensity}
 
 `
 
@@ -305,10 +303,8 @@ document.getElementById("output").value=output
 }
 
 function copyText(){
-
 navigator.clipboard.writeText(document.getElementById("output").value)
 alert("Copied")
-
 }
 
 function downloadText(){
@@ -317,15 +313,13 @@ let text=document.getElementById("output").value
 let blob=new Blob([text],{type:"text/plain"})
 let a=document.createElement("a")
 a.href=URL.createObjectURL(blob)
-a.download="horror_prompt.txt"
+a.download="horror_prompts.txt"
 a.click()
 
 }
 
 function clearText(){
-
 document.getElementById("output").value=""
-
 }
 
 </script>
