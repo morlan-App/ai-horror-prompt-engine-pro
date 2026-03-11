@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Horror Prompt Engine v14</title>
+<title>AI Horror Prompt Engine v15</title>
 
 <style>
 
 body{
 margin:0;
-background:#0b0b0b;
+background:#0a0a0a;
 color:white;
 font-family:Arial;
 }
@@ -57,7 +58,7 @@ color:white;
 
 textarea{
 width:100%;
-height:520px;
+height:540px;
 background:#111;
 border-radius:10px;
 border:1px solid #333;
@@ -90,17 +91,18 @@ gap:10px;
 <body>
 
 <div class="header">
-AI Horror Prompt Engine v14
+AI Horror Prompt Engine v15
 </div>
 
 <div class="container">
 
 <div class="card">
 
-<label>Prompt Engine</label>
+<label>AI Engine</label>
 <select id="engine">
 <option>Grok</option>
 <option>Dreamina</option>
+<option>Google Flow</option>
 </select>
 
 <label>Location</label>
@@ -120,7 +122,7 @@ AI Horror Prompt Engine v14
 
 <div class="buttons">
 
-<button onclick="generate()">Generate Prompt</button>
+<button onclick="generate()">Generate</button>
 <button onclick="copyText()">Copy</button>
 <button onclick="downloadText()">Download</button>
 <button onclick="clearText()">Clear</button>
@@ -133,42 +135,193 @@ AI Horror Prompt Engine v14
 
 <script>
 
-function createStory(){
+function generate(){
 
 let location=document.getElementById("location").value
 let creature=document.getElementById("creature").value
 let time=document.getElementById("time").value
 let engine=document.getElementById("engine").value
 
-return `
+let output=""
+
+if(engine==="Google Flow"){
+
+output=`
 
 IMAGE PROMPT
 
-Ultra realistic horror frame captured from a smartphone POV. A nervous paranormal vlogger stands inside a dark ${location} at ${time}. The environment is dimly lit by a weak flashlight beam shaking slightly from the vlogger’s hands. Dust particles float in the air and broken doors line the corridor. At the far end of the hallway a faint silhouette of a ${creature} can barely be seen standing motionless in the darkness. Cinematic horror lighting, extremely realistic found-footage style.
+Ultra realistic horror frame captured using smartphone POV inside a ${location} at ${time}. A paranormal vlogger holds a shaking flashlight while exploring the dark hallway. At the far end of the corridor the faint silhouette of a ${creature} stands motionless in the darkness. Cinematic horror lighting, realistic found footage atmosphere.
 
-SCENE 1 — CONTINUATION
+SCENE 1
 
-POV handheld smartphone footage continuing from the same hallway inside the ${location}. The camera slowly moves forward while the flashlight beam trembles slightly due to the vlogger’s nervous hands. Each step creates a subtle camera shake and faint echoing footsteps. The corridor is quiet except for distant creaking sounds. The camera cautiously scans the environment while approaching the area where the shadowy silhouette was previously seen.
+Scene
+Paranormal vlogger slowly walks forward inside the ${location} hallway.
 
-SCENE 2 — BUILDING TENSION
+Camera
+Handheld smartphone POV with subtle shake.
 
-The camera slowly turns toward a darker side corridor. The flashlight beam flickers across cracked walls and broken furniture. The vlogger hesitates and the camera movement becomes more unstable as the person steps forward carefully. In the far distance the ${creature} can briefly be seen standing silently before disappearing into the shadows. The camera zooms slightly while the vlogger whispers nervously.
+Action
+The flashlight beam scans the corridor cautiously.
 
-SCENE 3 — FIRST ENCOUNTER
+Environment
+Dusty abandoned building with broken doors and debris.
 
-The camera jerks suddenly as the vlogger realizes the figure has moved closer. The flashlight scans the hallway rapidly. Handheld shaking becomes more intense as the vlogger steps backward. The ${creature} is now partially visible behind a doorway, staring silently from the darkness.
+Lighting
+Weak flashlight beam with deep shadows.
 
-SCENE 4 — PANIC
+Atmosphere
+Quiet, tense, echoing footsteps.
 
-The vlogger quickly turns around while backing away. The camera becomes chaotic and unstable as breathing grows louder. The flashlight beam swings wildly across the corridor. The ${creature} slowly moves toward the camera from the shadows.
+Motion
+Slow walking movement.
 
-SCENE 5 — CHASE
+SCENE 2
 
-The vlogger suddenly starts running through the corridor. The smartphone footage shakes violently while the flashlight beam bounces across the walls and floor. Footsteps echo loudly through the building. The ${creature} briefly appears behind the camera frame chasing from the darkness.
+Scene
+The vlogger notices movement in the distance.
 
-SCENE 6 — ESCAPE
+Camera
+Handheld camera slowly zooms.
 
-The vlogger bursts through an exit door leading outside the building. The camera shakes heavily while the person turns back toward the entrance. For a brief moment the silhouette of the ${creature} can be seen standing inside the doorway before disappearing into darkness.
+Action
+The ${creature} briefly appears at the end of the hallway.
+
+Environment
+Dark corridor partially hidden by shadows.
+
+Lighting
+Flickering flashlight illumination.
+
+Atmosphere
+Tension rising.
+
+Motion
+Camera shaking slightly from fear.
+
+SCENE 3
+
+Scene
+The vlogger steps backward after noticing the ${creature} is closer.
+
+Camera
+Unstable handheld movement.
+
+Action
+Flashlight quickly scans walls and doorways.
+
+Environment
+Narrow hallway.
+
+Lighting
+Uneven flashlight lighting.
+
+Atmosphere
+Fear and confusion.
+
+Motion
+Sudden camera jerks.
+
+SCENE 4
+
+Scene
+The ${creature} slowly approaches.
+
+Camera
+Rapid handheld shake.
+
+Action
+The vlogger backs away.
+
+Environment
+Dust floating in the air.
+
+Lighting
+Swinging flashlight beam.
+
+Atmosphere
+Extreme tension.
+
+Motion
+Chaotic movement.
+
+SCENE 5
+
+Scene
+The vlogger runs away down the hallway.
+
+Camera
+Violent handheld motion.
+
+Action
+Footsteps echo loudly.
+
+Environment
+Long corridor with broken walls.
+
+Lighting
+Flashlight beam bouncing around.
+
+Atmosphere
+Panic.
+
+Motion
+Running camera movement.
+
+SCENE 6
+
+Scene
+The vlogger escapes outside.
+
+Camera
+Heavy shaking gradually stabilizes.
+
+Action
+The vlogger looks back at the building.
+
+Environment
+Dark night outside.
+
+Lighting
+Flashlight illuminating the doorway.
+
+Atmosphere
+Uneasy silence.
+
+Motion
+Slow camera stabilization.
+
+ENGINE
+Optimized for Google Flow
+
+`
+
+}
+
+else{
+
+output=`
+
+IMAGE PROMPT
+
+Ultra realistic horror smartphone POV scene inside a ${location} at ${time}. A nervous vlogger explores the corridor using a shaking flashlight. At the far end of the hallway the silhouette of a ${creature} is barely visible in the darkness.
+
+SCENE 1
+Handheld POV footage continues inside the ${location}. The vlogger slowly walks forward while the flashlight trembles slightly.
+
+SCENE 2
+The camera turns toward a darker corridor where the ${creature} briefly appears.
+
+SCENE 3
+The vlogger realizes the ${creature} is closer than before.
+
+SCENE 4
+The ${creature} slowly moves toward the camera.
+
+SCENE 5
+The vlogger begins running through the corridor while the camera shakes violently.
+
+SCENE 6
+The vlogger escapes outside and looks back toward the entrance where the ${creature} disappears.
 
 ENGINE
 Optimized for ${engine}
@@ -177,33 +330,32 @@ Optimized for ${engine}
 
 }
 
-function generate(){
-document.getElementById("output").value=createStory()
+document.getElementById("output").value=output
+
 }
 
 function copyText(){
+
 navigator.clipboard.writeText(document.getElementById("output").value)
 alert("Copied")
+
 }
 
 function downloadText(){
 
 let text=document.getElementById("output").value
-
 let blob=new Blob([text],{type:"text/plain"})
-
 let a=document.createElement("a")
-
 a.href=URL.createObjectURL(blob)
-
 a.download="horror_prompt.txt"
-
 a.click()
 
 }
 
 function clearText(){
+
 document.getElementById("output").value=""
+
 }
 
 </script>
