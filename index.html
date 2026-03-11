@@ -6,13 +6,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Horror Prompt Engine v15</title>
+<title>AI Horror Prompt Engine v19</title>
 
 <style>
 
 body{
 margin:0;
-background:#0a0a0a;
+background:#0b0b0b;
 color:white;
 font-family:Arial;
 }
@@ -58,7 +58,7 @@ color:white;
 
 textarea{
 width:100%;
-height:540px;
+height:580px;
 background:#111;
 border-radius:10px;
 border:1px solid #333;
@@ -91,7 +91,7 @@ gap:10px;
 <body>
 
 <div class="header">
-AI Horror Prompt Engine v15
+AI Horror Prompt Engine v19
 </div>
 
 <div class="container">
@@ -113,6 +113,12 @@ AI Horror Prompt Engine v15
 
 <label>Time</label>
 <input id="time" placeholder="midnight">
+
+<label>Batch Stories</label>
+<input id="batch" type="number" value="1">
+
+<label>Jump Scare Time (seconds)</label>
+<input id="jumpscare" type="number" value="8">
 
 </div>
 
@@ -141,187 +147,65 @@ let location=document.getElementById("location").value
 let creature=document.getElementById("creature").value
 let time=document.getElementById("time").value
 let engine=document.getElementById("engine").value
+let batch=parseInt(document.getElementById("batch").value)
+let jumpscare=document.getElementById("jumpscare").value
 
 let output=""
 
-if(engine==="Google Flow"){
+for(let i=1;i<=batch;i++){
 
-output=`
+output+=`
 
-IMAGE PROMPT
+===== STORY ${i} =====
 
-Ultra realistic horror frame captured using smartphone POV inside a ${location} at ${time}. A paranormal vlogger holds a shaking flashlight while exploring the dark hallway. At the far end of the corridor the faint silhouette of a ${creature} stands motionless in the darkness. Cinematic horror lighting, realistic found footage atmosphere.
+HOOK
+"This might be the scariest thing I've ever recorded..."
 
-SCENE 1
+TITLE
+Explorer records a terrifying ${creature} inside ${location}
 
-Scene
-Paranormal vlogger slowly walks forward inside the ${location} hallway.
-
-Camera
-Handheld smartphone POV with subtle shake.
-
-Action
-The flashlight beam scans the corridor cautiously.
-
-Environment
-Dusty abandoned building with broken doors and debris.
-
-Lighting
-Weak flashlight beam with deep shadows.
-
-Atmosphere
-Quiet, tense, echoing footsteps.
-
-Motion
-Slow walking movement.
-
-SCENE 2
-
-Scene
-The vlogger notices movement in the distance.
-
-Camera
-Handheld camera slowly zooms.
-
-Action
-The ${creature} briefly appears at the end of the hallway.
-
-Environment
-Dark corridor partially hidden by shadows.
-
-Lighting
-Flickering flashlight illumination.
-
-Atmosphere
-Tension rising.
-
-Motion
-Camera shaking slightly from fear.
-
-SCENE 3
-
-Scene
-The vlogger steps backward after noticing the ${creature} is closer.
-
-Camera
-Unstable handheld movement.
-
-Action
-Flashlight quickly scans walls and doorways.
-
-Environment
-Narrow hallway.
-
-Lighting
-Uneven flashlight lighting.
-
-Atmosphere
-Fear and confusion.
-
-Motion
-Sudden camera jerks.
-
-SCENE 4
-
-Scene
-The ${creature} slowly approaches.
-
-Camera
-Rapid handheld shake.
-
-Action
-The vlogger backs away.
-
-Environment
-Dust floating in the air.
-
-Lighting
-Swinging flashlight beam.
-
-Atmosphere
-Extreme tension.
-
-Motion
-Chaotic movement.
-
-SCENE 5
-
-Scene
-The vlogger runs away down the hallway.
-
-Camera
-Violent handheld motion.
-
-Action
-Footsteps echo loudly.
-
-Environment
-Long corridor with broken walls.
-
-Lighting
-Flashlight beam bouncing around.
-
-Atmosphere
-Panic.
-
-Motion
-Running camera movement.
-
-SCENE 6
-
-Scene
-The vlogger escapes outside.
-
-Camera
-Heavy shaking gradually stabilizes.
-
-Action
-The vlogger looks back at the building.
-
-Environment
-Dark night outside.
-
-Lighting
-Flashlight illuminating the doorway.
-
-Atmosphere
-Uneasy silence.
-
-Motion
-Slow camera stabilization.
-
-ENGINE
-Optimized for Google Flow
-
-`
-
-}
-
-else{
-
-output=`
+VIDEO IDEA
+POV horror exploration where a vlogger accidentally records a ${creature} inside ${location} at ${time}.
 
 IMAGE PROMPT
-
-Ultra realistic horror smartphone POV scene inside a ${location} at ${time}. A nervous vlogger explores the corridor using a shaking flashlight. At the far end of the hallway the silhouette of a ${creature} is barely visible in the darkness.
+Ultra realistic smartphone POV inside ${location}, flashlight lighting, shadowy corridor, silhouette of ${creature}.
 
 SCENE 1
-Handheld POV footage continues inside the ${location}. The vlogger slowly walks forward while the flashlight trembles slightly.
+Explorer enters the dark hallway carefully.
 
 SCENE 2
-The camera turns toward a darker corridor where the ${creature} briefly appears.
+Strange sound echoes.
 
 SCENE 3
-The vlogger realizes the ${creature} is closer than before.
+Shadow moves at the end of the corridor.
 
 SCENE 4
-The ${creature} slowly moves toward the camera.
+The ${creature} slowly appears closer.
 
-SCENE 5
-The vlogger begins running through the corridor while the camera shakes violently.
+SCENE 5 – JUMP SCARE (00:${jumpscare})
+The ${creature} suddenly appears extremely close to the camera causing violent shaking.
 
 SCENE 6
-The vlogger escapes outside and looks back toward the entrance where the ${creature} disappears.
+Explorer runs away while the camera shakes violently.
+
+SCRIPT
+
+Explorer: "Guys… this place feels really weird."
+
+(sound)
+
+Explorer: "Did you hear that?"
+
+(camera turns)
+
+Explorer: "WHAT IS THAT?!"
+
+THUMBNAIL PROMPT
+
+Terrified explorer looking at camera, ${creature} behind, dark ${location}, dramatic horror lighting, viral YouTube thumbnail style.
+
+HASHTAGS
+#horror #scary #foundfootage #ghost #urbanexploration
 
 ENGINE
 Optimized for ${engine}
@@ -335,27 +219,28 @@ document.getElementById("output").value=output
 }
 
 function copyText(){
-
 navigator.clipboard.writeText(document.getElementById("output").value)
 alert("Copied")
-
 }
 
 function downloadText(){
 
 let text=document.getElementById("output").value
+
 let blob=new Blob([text],{type:"text/plain"})
+
 let a=document.createElement("a")
+
 a.href=URL.createObjectURL(blob)
+
 a.download="horror_prompt.txt"
+
 a.click()
 
 }
 
 function clearText(){
-
 document.getElementById("output").value=""
-
 }
 
 </script>
